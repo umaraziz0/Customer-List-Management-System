@@ -44,7 +44,7 @@
                         size=""
                         variant="primary"
                         class="mb-3"
-                        v-b-modal.addUserModal
+                        v-b-modal.create-customer-modal
                     >
                         <span class="font-weight-bold font-open-sans mr-2"
                             >Add Customer
@@ -115,11 +115,16 @@
                 </b-col>
             </b-row>
         </div>
+        <create-customer-modal @reload-table="getCustomers" />
     </b-container>
 </template>
 
 <script>
+import CreateCustomerModal from "./components/CreateCustomerModal.vue";
+
 export default {
+    components: { CreateCustomerModal },
+
     data() {
         return {
             loading: false,
@@ -183,8 +188,6 @@ export default {
                 const response = await this.axios.get("/customers");
 
                 const data = response.data;
-
-                console.log(data);
 
                 this.customers = Object.keys(data).map(i => data[i]);
 
