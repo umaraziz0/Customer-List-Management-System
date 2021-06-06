@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,4 +27,8 @@ Route::prefix("admin")->group(function () {
     Route::middleware(['auth', 'is_admin'])->group(function () {
         Route::get("/{any?}", [AdminController::class, 'index'])->where("any", ".*")->name("admin.home");
     });
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get("/customers", [CustomerController::class, 'index']);
 });

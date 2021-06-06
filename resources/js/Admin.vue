@@ -1,11 +1,16 @@
 <template>
-    <b-container class="mt-5">
+    <b-container class="mt-5" style="height: 100vh">
         <h1>Customers List</h1>
-        <b-spinner
+        <div
             v-if="loading"
-            variant="primary"
-            label="Spinning"
-        ></b-spinner>
+            class="d-flex justify-content-center align-items-center h-100"
+        >
+            <b-spinner
+                variant="primary"
+                label="Spinning"
+                class="text-center"
+            ></b-spinner>
+        </div>
         <div v-else>
             <b-row class="w-100 justify-content-between ">
                 <!-- Filter / Search -->
@@ -62,6 +67,12 @@
                 class="font-roboto"
             >
                 <!-- Edit and Delete Buttons -->
+                <template #cell(status)="row">
+                    <b-badge :variant="statusColor(row.item.status)">{{
+                        row.item.status.toUpperCase()
+                    }}</b-badge>
+                </template>
+
                 <template #cell(actions)="row">
                     <b-link class="text-secondary" @click="editUser(row.item)">
                         <font-awesome-icon icon="edit" class="mr-3" />
@@ -153,9 +164,54 @@ export default {
         };
     },
 
+    computed: {
+        rows() {
+            return this.customers.length;
+        }
+    },
+
+    created() {
+        this.getCustomers();
+    },
+
     methods: {
+        async getCustomers() {
+            this.loading = true;
+            this.customers = [];
+
+            try {
+                const response = await this.axios.get("/customers");
+
+                const data = response.data;
+
+                console.log(data);
+
+                this.customers = Object.keys(data).map(i => data[i]);
+
+                this.loading = false;
+            } catch (errors) {
+                console.error(errors);
+            }
+        },
+
         onFiltered() {
             //
+        },
+
+        statusColor(status) {
+            switch (status) {
+                case "qualified":
+                    return "success";
+                    break;
+                case "pending":
+                    return "primary";
+                    break;
+                case "lost":
+                    return "danger";
+                    break;
+                default:
+                    return "secondary";
+            }
         }
     }
 };

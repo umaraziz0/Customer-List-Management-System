@@ -7,6 +7,7 @@ by Mohamad Umar Aziz
 -   Laravel 8
 -   Vue.js
 -   Vue Router
+-   Vue-Axios
 -   Bootstrap
 -   Bootstrap-Vue
 -   Vue-Fontawesome

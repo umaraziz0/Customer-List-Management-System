@@ -38,7 +38,7 @@ Vue.use(IconsPlugin);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-import App from "./App.vue";
+import Admin from "./Admin.vue";
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
@@ -60,6 +60,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: "#app",
-    components: { App },
+    components: { Admin },
     router: router
 });

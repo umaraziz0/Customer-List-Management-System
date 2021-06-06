@@ -1,10 +1,10 @@
-import App from "./App.vue";
+import Admin from "./Admin.vue";
 
 const routes = [
     {
         path: "/admin",
-        name: "App",
-        component: App
+        name: "Admin",
+        component: Admin
     }
 ];
 
