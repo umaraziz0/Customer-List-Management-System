@@ -22,6 +22,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::middleware(['auth', 'is_admin'])->group(function () {
-    Route::get("/admin", [AdminController::class, 'index'])->name("admin.home");
+Route::prefix("admin")->group(function () {
+    Route::middleware(['auth', 'is_admin'])->group(function () {
+        Route::get("/{any?}", [AdminController::class, 'index'])->where("any", ".*")->name("admin.home");
+    });
 });

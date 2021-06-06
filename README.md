@@ -9,6 +9,7 @@ by Mohamad Umar Aziz
 -   Vue Router
 -   Bootstrap
 -   Bootstrap-Vue
+-   Vue-Fontawesome
 -   MySQL 8.0
 
 ### Installation
