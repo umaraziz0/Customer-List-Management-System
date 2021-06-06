@@ -1,9 +1,5 @@
 <template>
-    <b-modal
-        id="create-customer-modal"
-        title="Add New Customer Contact"
-        hide-footer
-    >
+    <b-modal id="edit-customer-modal" title="Edit Customer Contact" hide-footer>
         <b-form @submit="onSubmit">
             <b-form-group
                 id="input-group-2"
@@ -12,7 +8,7 @@
             >
                 <b-form-input
                     id="name"
-                    v-model="form.name"
+                    v-model="customerData.name"
                     placeholder=""
                     required
                 ></b-form-input>
@@ -25,7 +21,7 @@
             >
                 <b-form-input
                     id="phone"
-                    v-model="form.phone"
+                    v-model="customerData.phone"
                     placeholder=""
                     required
                 ></b-form-input>
@@ -38,7 +34,7 @@
             >
                 <b-form-input
                     id="email"
-                    v-model="form.email"
+                    v-model="customerData.email"
                     placeholder=""
                     required
                 ></b-form-input>
@@ -54,14 +50,10 @@
 
 <script>
 export default {
+    props: ["customerData"],
     data() {
         return {
             loading: false,
-            form: {
-                name: "",
-                phone: "",
-                email: ""
-            },
             toastCount: 0,
             emits: ["reload-table"]
         };
@@ -74,12 +66,15 @@ export default {
             this.loading = true;
 
             try {
-                const response = await this.axios.post("/customer", this.form);
+                const response = await this.axios.put(
+                    "/customer/" + this.customerData.id,
+                    this.customerData
+                );
 
                 const data = response.data;
 
                 this.loading = false;
-                this.$bvModal.hide("create-customer-modal");
+                this.$bvModal.hide("edit-customer-modal");
 
                 // Show Toast
                 this.toastCount++;
@@ -89,16 +84,11 @@ export default {
                     variant: "success"
                 });
 
-                // Reset form if successful
-                this.form.name = "";
-                this.form.email = "";
-                this.form.phone = "";
-
                 // Refresh table
                 this.$emit("reload-table");
             } catch (errors) {
                 this.loading = false;
-                this.$bvModal.hide("create-customer-modal");
+                this.$bvModal.hide("edit-customer-modal");
 
                 // Show Toast
                 this.toastCount++;

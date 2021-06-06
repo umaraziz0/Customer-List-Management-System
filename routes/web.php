@@ -32,4 +32,5 @@ Route::prefix("admin")->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get("/customers", [CustomerController::class, 'index']);
     Route::post("/customer", [CustomerController::class, 'store']);
+    Route::put("/customer/{customer}", [CustomerController::class, 'update']);
 });

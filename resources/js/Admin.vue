@@ -1,6 +1,6 @@
 <template>
     <b-container class="mt-5" style="height: 100vh">
-        <h1>Customers List</h1>
+        <h1 class="mb-3">Customer Contacts List</h1>
         <div
             v-if="loading"
             class="d-flex justify-content-center align-items-center h-100"
@@ -74,12 +74,27 @@
                 </template>
 
                 <template #cell(actions)="row">
-                    <b-link class="text-secondary" @click="editUser(row.item)">
+                    <b-link
+                        v-b-tooltip.hover
+                        title="Assign Agent"
+                        class="text-secondary"
+                        @click="assignAgent(row.item)"
+                    >
+                        <font-awesome-icon icon="user" class="mr-3" />
+                    </b-link>
+                    <b-link
+                        v-b-tooltip.hover
+                        title="Edit Contact"
+                        class="text-secondary"
+                        @click="editCustomer(row.item)"
+                    >
                         <font-awesome-icon icon="edit" class="mr-3" />
                     </b-link>
                     <b-link
+                        v-b-tooltip.hover
+                        title="Delete Contact"
                         class="text-secondary"
-                        @click="deleteUser(row.item)"
+                        @click="deleteCustomer(row.item)"
                     >
                         <font-awesome-icon icon="trash" class="" />
                     </b-link>
@@ -116,19 +131,25 @@
             </b-row>
         </div>
         <create-customer-modal @reload-table="getCustomers" />
+        <edit-customer-modal
+            :customerData="customerData"
+            @reload-table="getCustomers"
+        />
     </b-container>
 </template>
 
 <script>
 import CreateCustomerModal from "./components/CreateCustomerModal.vue";
+import EditCustomerModal from "./components/EditCustomerModal.vue";
 
 export default {
-    components: { CreateCustomerModal },
+    components: { CreateCustomerModal, EditCustomerModal },
 
     data() {
         return {
             loading: false,
             customers: [],
+            customerData: {},
             currentPage: 1,
             perPage: 10,
             pageOptions: [5, 10, 25, 50, 100],
@@ -142,7 +163,7 @@ export default {
                 },
                 {
                     key: "name",
-                    label: "Name",
+                    label: "Customer Name",
                     sortable: true
                 },
                 {
@@ -158,6 +179,11 @@ export default {
                 {
                     key: "status",
                     label: "Status",
+                    sortable: true
+                },
+                {
+                    key: "agent",
+                    label: "Agent",
                     sortable: true
                 },
                 {
@@ -197,8 +223,24 @@ export default {
             }
         },
 
-        onFiltered() {
+        editCustomer(customer) {
+            this.customerData = customer;
+            this.$bvModal.show("edit-customer-modal");
+        },
+
+        deleteCustomer(customer) {
+            this.customerData = customer;
+            this.$bvModal.show("delete-customer-modal");
+        },
+
+        assignAgent(customer) {
             //
+        },
+
+        onFiltered(filteredItems) {
+            // Trigger pagination to update the number of buttons/pages due to filtering
+            this.totalRows = filteredItems.length;
+            this.currentPage = 1;
         },
 
         statusColor(status) {

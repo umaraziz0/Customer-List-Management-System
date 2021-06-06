@@ -15,10 +15,8 @@ class FollowUp extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'phone',
-        'email',
-        'agent',
-        'status',
+        "agent_id",
+        "customer_id",
+        "message"
     ];
 }

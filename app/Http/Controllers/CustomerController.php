@@ -33,7 +33,7 @@ class CustomerController extends Controller
 
         $customer = Customer::create($request->all());
 
-        return response([
+        return response()->json([
             "success" => true,
             "message" => "Customer contact created.",
             "customer" => $customer
@@ -60,7 +60,19 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+        $request->validate([
+            "name" => "required|string",
+            "phone" => "required|string|unique:customers,phone," . $customer->id,
+            "email" => "required|email|unique:customers,email," . $customer->id,
+        ]);
+
+        $customer->update($request->all());
+
+        return response([
+            "success" => true,
+            "message" => "Customer contact updated.",
+            "customer" => $customer
+        ], 200);
     }
 
     /**

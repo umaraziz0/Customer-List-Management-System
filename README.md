@@ -8,6 +8,7 @@ by Mohamad Umar Aziz
 -   Vue.js
 -   Vue Router
 -   Vue-Axios
+-   vform
 -   Bootstrap
 -   Bootstrap-Vue
 -   Vue-Fontawesome

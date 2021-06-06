@@ -19,13 +19,13 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 
-library.add(fas);
-library.add(fab);
-
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
+
+library.add(fas);
+library.add(fab);
 
 /**
  * The following block of code may be used to automatically register your
