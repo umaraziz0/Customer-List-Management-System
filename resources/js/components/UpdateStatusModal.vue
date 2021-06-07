@@ -1,27 +1,18 @@
 <template>
-    <b-modal id="follow-up-modal" title="Follow Up Customer" hide-footer>
+    <b-modal
+        id="update-status-modal"
+        title="Manually Update Customer Status"
+        hide-footer
+    >
         <b-form @submit="onSubmit">
-            <b-form-group id="input-group-2" label="" label-for="title">
-                <b-form-input
-                    id="title"
-                    v-model="form.title"
-                    placeholder="Enter title..."
-                    required
-                ></b-form-input>
-            </b-form-group>
-
-            <b-form-textarea
-                id="message"
-                v-model="form.message"
-                placeholder="Enter message..."
-                rows="3"
-                max-rows="6"
+            <v-select
+                v-model="customerData.status"
+                :options="options"
                 class="mb-3"
-            ></b-form-textarea>
-
+            ></v-select>
             <b-button type="submit" variant="primary" class="float-right"
                 ><b-spinner small v-if="loading"></b-spinner
-                ><span v-else>Submit</span>
+                ><span v-else>Update</span>
             </b-button>
         </b-form>
     </b-modal>
@@ -33,11 +24,8 @@ export default {
     data() {
         return {
             loading: false,
-            form: {
-                title: "",
-                message: ""
-            },
             toastCount: 0,
+            options: ["Uncontacted", "Pending", "Qualified", "Lost"],
             emits: ["reload-table"]
         };
     },
@@ -48,22 +36,18 @@ export default {
 
             this.loading = true;
 
-            const formData = {
-                title: this.form.title,
-                message: this.form.message,
-                customer_id: this.customerData.id
-            };
-
             try {
-                const response = await this.axios.post(
-                    "/agent/followup/",
-                    formData
+                const response = await this.axios.put(
+                    "/agent/updatestatus/" + this.customerData.id,
+                    {
+                        status: this.customerData.status
+                    }
                 );
 
                 const data = response.data;
 
                 this.loading = false;
-                this.$bvModal.hide("follow-up-modal");
+                this.$bvModal.hide("update-status-modal");
 
                 // Show Toast
                 this.toastCount++;
@@ -73,15 +57,11 @@ export default {
                     variant: "success"
                 });
 
-                // Clear form
-                this.form.title = "";
-                this.form.message = "";
-
                 // Refresh table
                 this.$emit("reload-table");
             } catch (errors) {
                 this.loading = false;
-                this.$bvModal.hide("follow-up-modal");
+                this.$bvModal.hide("update-status-modal");
 
                 // Show Toast
                 this.toastCount++;

@@ -39,17 +39,25 @@
                     </b-form-group>
                 </b-col>
                 <!-- Add Student -->
-                <b-col cols="5" class="text-right">
+                <b-col cols="5" class="text-right mb-3">
                     <b-button
                         size=""
                         variant="primary"
-                        class="mb-3"
+                        class="mr-2"
                         v-b-modal.create-customer-modal
                     >
                         <span class="font-weight-bold font-open-sans mr-2"
                             >Follow Up History
                         </span>
                         <font-awesome-icon icon="history"></font-awesome-icon>
+                    </b-button>
+                    <b-button
+                        size=""
+                        variant="primary"
+                        class=""
+                        @click="getCustomers"
+                    >
+                        <font-awesome-icon icon="sync"></font-awesome-icon>
                     </b-button>
                 </b-col>
             </b-row>
@@ -74,14 +82,24 @@
                 </template>
 
                 <template #cell(actions)="row">
-                    <b-link
-                        v-b-tooltip.hover
-                        title="Follow Up"
-                        class="text-secondary"
-                        @click="followUp(row.item)"
-                    >
-                        <font-awesome-icon icon="reply" class="" />
-                    </b-link>
+                    <div class="text-center">
+                        <b-link
+                            v-b-tooltip.hover
+                            title="Follow Up"
+                            class="text-secondary mr-3"
+                            @click="followUp(row.item)"
+                        >
+                            <font-awesome-icon icon="reply" class="" />
+                        </b-link>
+                        <b-link
+                            v-b-tooltip.hover
+                            title="Update Status"
+                            class="text-secondary"
+                            @click="updateStatus(row.item)"
+                        >
+                            <font-awesome-icon icon="user-edit" class="" />
+                        </b-link>
+                    </div>
                 </template>
             </b-table>
             <b-row class="justify-content-between">
@@ -118,15 +136,21 @@
             :customerData="customerData"
             @reload-table="getCustomers"
         />
+        <update-status-modal
+            :customerData="customerData"
+            @reload-table="getCustomers"
+        />
     </b-container>
 </template>
 
 <script>
 import FollowUpModal from "./components/FollowUpModal.vue";
+import UpdateStatusModal from "./components/UpdateStatusModal.vue";
 
 export default {
     components: {
-        FollowUpModal
+        FollowUpModal,
+        UpdateStatusModal
     },
 
     data() {
@@ -205,6 +229,17 @@ export default {
         followUp(customer) {
             this.customerData = customer;
             this.$bvModal.show("follow-up-modal");
+        },
+
+        updateStatus(customer) {
+            this.customerData = customer;
+
+            // Uppercase first letter of status
+            this.customerData.status =
+                customer.status.charAt(0).toUpperCase() +
+                customer.status.slice(1);
+
+            this.$bvModal.show("update-status-modal");
         },
 
         onFiltered(filteredItems) {

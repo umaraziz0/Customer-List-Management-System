@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\FollowUp;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -72,7 +73,11 @@ class CustomerController extends Controller
             "email" => "required|email|unique:customers,email," . $customer->id,
         ]);
 
-        $customer->update($request->all());
+        $customer->update([
+            "name" => $request->input("name"),
+            "phone" => $request->input("phone"),
+            "email" => $request->input("email"),
+        ]);
 
         return response()->json([
             "success" => true,
@@ -107,6 +112,11 @@ class CustomerController extends Controller
      */
     public function assignAgent(Request $request, Customer $customer)
     {
+        // ! CHECK
+        $request->validate([
+            "agent_id" => "required|numeric|exists:users,id",
+        ]);
+
         $customer->update([
             "agent" => $request->input("agent_id")
         ]);
@@ -136,10 +146,43 @@ class CustomerController extends Controller
 
         $followUp = FollowUp::create($request->all());
 
+        // Update customer status
+        $customer = Customer::find($request->input("customer_id"));
+
+        if ($customer->status == "uncontacted") {
+            $customer->status = "pending";
+            $customer->save();
+        }
+
         return response()->json([
             "success" => true,
             "message" => "Customer contact created.",
-            "follow_up" => $followUp
+            "follow_up" => $followUp,
+            "status" => $customer->status
         ], 201);
+    }
+
+    /**
+     * Manually updates customer status
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Customer  $customer
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatus(Request $request, Customer $customer)
+    {
+        $request->validate([
+            "status" => "required|string|in:Uncontacted,Pending,Qualified,Lost",
+        ]);
+
+        $customer->update([
+            "status" => Str::lower($request->input("status"))
+        ]);
+
+        return response()->json([
+            "success" => true,
+            "message" => "Customer contact updated.",
+            "customer" => $customer
+        ], 200);
     }
 }

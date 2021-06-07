@@ -39,17 +39,25 @@
                     </b-form-group>
                 </b-col>
                 <!-- Add Student -->
-                <b-col cols="5" class="text-right">
+                <b-col cols="5" class="text-right mb-3">
                     <b-button
                         size=""
                         variant="primary"
-                        class="mb-3"
+                        class="mr-2"
                         v-b-modal.create-customer-modal
                     >
                         <span class="font-weight-bold font-open-sans mr-2"
                             >Add Customer
                         </span>
                         <font-awesome-icon icon="plus"></font-awesome-icon>
+                    </b-button>
+                    <b-button
+                        size=""
+                        variant="primary"
+                        class=""
+                        @click="getCustomers"
+                    >
+                        <font-awesome-icon icon="sync"></font-awesome-icon>
                     </b-button>
                 </b-col>
             </b-row>
@@ -74,30 +82,32 @@
                 </template>
 
                 <template #cell(actions)="row">
-                    <b-link
-                        v-b-tooltip.hover
-                        title="Assign Agent"
-                        class="text-secondary"
-                        @click="assignAgent(row.item)"
-                    >
-                        <font-awesome-icon icon="user" class="mr-3" />
-                    </b-link>
-                    <b-link
-                        v-b-tooltip.hover
-                        title="Edit Contact"
-                        class="text-secondary"
-                        @click="editCustomer(row.item)"
-                    >
-                        <font-awesome-icon icon="edit" class="mr-3" />
-                    </b-link>
-                    <b-link
-                        v-b-tooltip.hover
-                        title="Delete Contact"
-                        class="text-secondary"
-                        @click="deleteCustomer(row.item)"
-                    >
-                        <font-awesome-icon icon="trash" class="" />
-                    </b-link>
+                    <div class="text-center">
+                        <b-link
+                            v-b-tooltip.hover
+                            title="Assign Agent"
+                            class="text-secondary"
+                            @click="assignAgent(row.item)"
+                        >
+                            <font-awesome-icon icon="user" class="mr-3" />
+                        </b-link>
+                        <b-link
+                            v-b-tooltip.hover
+                            title="Edit Contact"
+                            class="text-secondary"
+                            @click="editCustomer(row.item)"
+                        >
+                            <font-awesome-icon icon="edit" class="mr-3" />
+                        </b-link>
+                        <b-link
+                            v-b-tooltip.hover
+                            title="Delete Contact"
+                            class="text-secondary"
+                            @click="deleteCustomer(row.item)"
+                        >
+                            <font-awesome-icon icon="trash" class="" />
+                        </b-link>
+                    </div>
                 </template>
             </b-table>
             <b-row class="justify-content-between">

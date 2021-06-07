@@ -43,6 +43,7 @@ Route::prefix("agent")->group(function () {
     Route::middleware(['auth', 'is_agent'])->group(function () {
         Route::get("/customers", [CustomerController::class, 'getCustomersByAgent']);
         Route::post("/followup", [CustomerController::class, 'followUp']);
+        Route::put("/updatestatus/{customer}", [CustomerController::class, 'updateStatus']);
 
         Route::get("/{any?}", [AgentController::class, 'index'])->where("any", ".*")->name("agent.home");
     });
