@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\FollowUp;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -15,6 +16,11 @@ class CustomerController extends Controller
     public function index()
     {
         return Customer::all();
+    }
+
+    public function getCustomersByAgent()
+    {
+        return Customer::where("agent", auth()->user()->id)->get();
     }
 
     /**
@@ -96,6 +102,7 @@ class CustomerController extends Controller
      * Assign an agent to a customer
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
     public function assignAgent(Request $request, Customer $customer)
@@ -109,5 +116,30 @@ class CustomerController extends Controller
             "message" => "Agent assigned.",
             "customer" => $customer
         ], 200);
+    }
+
+    /**
+     * Send a follow up message to a customer
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function followUp(Request $request)
+    {
+        $request->validate([
+            "title" => "required|string",
+            "message" => "required|string",
+            "customer_id" => "required|numeric|exists:customers,id",
+        ]);
+
+        $request->request->add(["agent_id" => auth()->user()->id]);
+
+        $followUp = FollowUp::create($request->all());
+
+        return response()->json([
+            "success" => true,
+            "message" => "Customer contact created.",
+            "follow_up" => $followUp
+        ], 201);
     }
 }

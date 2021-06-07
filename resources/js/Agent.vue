@@ -47,9 +47,9 @@
                         v-b-modal.create-customer-modal
                     >
                         <span class="font-weight-bold font-open-sans mr-2"
-                            >Add Customer
+                            >Follow Up History
                         </span>
-                        <font-awesome-icon icon="plus"></font-awesome-icon>
+                        <font-awesome-icon icon="history"></font-awesome-icon>
                     </b-button>
                 </b-col>
             </b-row>
@@ -76,27 +76,11 @@
                 <template #cell(actions)="row">
                     <b-link
                         v-b-tooltip.hover
-                        title="Assign Agent"
+                        title="Follow Up"
                         class="text-secondary"
-                        @click="assignAgent(row.item)"
+                        @click="followUp(row.item)"
                     >
-                        <font-awesome-icon icon="user" class="mr-3" />
-                    </b-link>
-                    <b-link
-                        v-b-tooltip.hover
-                        title="Edit Contact"
-                        class="text-secondary"
-                        @click="editCustomer(row.item)"
-                    >
-                        <font-awesome-icon icon="edit" class="mr-3" />
-                    </b-link>
-                    <b-link
-                        v-b-tooltip.hover
-                        title="Delete Contact"
-                        class="text-secondary"
-                        @click="deleteCustomer(row.item)"
-                    >
-                        <font-awesome-icon icon="trash" class="" />
+                        <font-awesome-icon icon="reply" class="" />
                     </b-link>
                 </template>
             </b-table>
@@ -130,16 +114,7 @@
                 </b-col>
             </b-row>
         </div>
-        <create-customer-modal @reload-table="getCustomers" />
-        <edit-customer-modal
-            :customerData="customerData"
-            @reload-table="getCustomers"
-        />
-        <delete-customer-modal
-            :customerData="customerData"
-            @reload-table="getCustomers"
-        />
-        <assign-agent-modal
+        <follow-up-modal
             :customerData="customerData"
             @reload-table="getCustomers"
         />
@@ -147,17 +122,11 @@
 </template>
 
 <script>
-import CreateCustomerModal from "./components/CreateCustomerModal.vue";
-import EditCustomerModal from "./components/EditCustomerModal.vue";
-import DeleteCustomerModal from "./components/DeleteCustomerModal.vue";
-import AssignAgentModal from "./components/AssignAgentModal.vue";
+import FollowUpModal from "./components/FollowUpModal.vue";
 
 export default {
     components: {
-        CreateCustomerModal,
-        EditCustomerModal,
-        DeleteCustomerModal,
-        AssignAgentModal
+        FollowUpModal
     },
 
     data() {
@@ -197,11 +166,6 @@ export default {
                     sortable: true
                 },
                 {
-                    key: "agent",
-                    label: "Agent",
-                    sortable: true
-                },
-                {
                     key: "actions",
                     label: "Actions",
                     sortable: true
@@ -226,7 +190,7 @@ export default {
             this.customers = [];
 
             try {
-                const response = await this.axios.get("/admin/customers");
+                const response = await this.axios.get("/agent/customers");
 
                 const data = response.data;
 
@@ -238,19 +202,9 @@ export default {
             }
         },
 
-        editCustomer(customer) {
+        followUp(customer) {
             this.customerData = customer;
-            this.$bvModal.show("edit-customer-modal");
-        },
-
-        deleteCustomer(customer) {
-            this.customerData = customer;
-            this.$bvModal.show("delete-customer-modal");
-        },
-
-        assignAgent(customer) {
-            this.customerData = customer;
-            this.$bvModal.show("assign-agent-modal");
+            this.$bvModal.show("follow-up-modal");
         },
 
         onFiltered(filteredItems) {

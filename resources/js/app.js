@@ -40,6 +40,7 @@ library.add(fab);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 import Admin from "./Admin.vue";
+import Agent from "./Agent.vue";
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("v-select", vSelect);
@@ -62,6 +63,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: "#app",
-    components: { Admin },
+    components: { Admin, Agent },
     router: router
 });

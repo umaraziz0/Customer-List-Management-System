@@ -17,6 +17,7 @@ class FollowUp extends Model
     protected $fillable = [
         "agent_id",
         "customer_id",
+        "title",
         "message"
     ];
 }

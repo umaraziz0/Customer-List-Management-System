@@ -29,6 +29,7 @@ Route::prefix("admin")->group(function () {
         Route::get("/getagents", [AgentController::class, "getAgents"]);
         Route::put("/assign/{customer}", [CustomerController::class, 'assignAgent']);
 
+        Route::get("/customers", [CustomerController::class, 'index']);
         Route::post("/customer", [CustomerController::class, 'store']);
         Route::put("/customer/{customer}", [CustomerController::class, 'update']);
         Route::delete("/customer/{customer}", [CustomerController::class, 'destroy']);
@@ -40,11 +41,14 @@ Route::prefix("admin")->group(function () {
 // Agent routes
 Route::prefix("agent")->group(function () {
     Route::middleware(['auth', 'is_agent'])->group(function () {
+        Route::get("/customers", [CustomerController::class, 'getCustomersByAgent']);
+        Route::post("/followup", [CustomerController::class, 'followUp']);
+
         Route::get("/{any?}", [AgentController::class, 'index'])->where("any", ".*")->name("agent.home");
     });
 });
 
 // Admin & agent routes
 Route::middleware(['auth'])->group(function () {
-    Route::get("/customers", [CustomerController::class, 'index']);
+    //
 });
