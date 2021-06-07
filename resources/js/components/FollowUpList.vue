@@ -1,6 +1,6 @@
 <template>
     <b-container class="mt-5" style="height: 100vh">
-        <h1 class="mb-3">Customer Contacts List</h1>
+        <h1 class="mb-3">Follow Up Remarks List</h1>
         <div
             v-if="loading"
             class="d-flex justify-content-center align-items-center h-100"
@@ -44,18 +44,20 @@
                         size=""
                         variant="primary"
                         class="mr-2"
-                        to="/agent/messages"
+                        to="/agent"
                     >
                         <span class="font-weight-bold font-open-sans mr-2"
-                            >Follow Up History
+                            >Contacts List
                         </span>
-                        <font-awesome-icon icon="history"></font-awesome-icon>
+                        <font-awesome-icon
+                            icon="address-book"
+                        ></font-awesome-icon>
                     </b-button>
                     <b-button
                         size=""
                         variant="primary"
                         class=""
-                        @click="getCustomers"
+                        @click="getMessages"
                     >
                         <font-awesome-icon icon="sync"></font-awesome-icon>
                     </b-button>
@@ -66,7 +68,7 @@
                 striped
                 responsive
                 :fields="fields"
-                :items="customers"
+                :items="messages"
                 :per-page="perPage"
                 :current-page="currentPage"
                 :filter="filter"
@@ -132,32 +134,19 @@
                 </b-col>
             </b-row>
         </div>
-        <follow-up-modal
-            :customerData="customerData"
-            @reload-table="getCustomers"
-        />
-        <update-status-modal
-            :customerData="customerData"
-            @reload-table="getCustomers"
-        />
     </b-container>
 </template>
 
 <script>
-import FollowUpModal from "./components/FollowUpModal.vue";
-import UpdateStatusModal from "./components/UpdateStatusModal.vue";
-
 export default {
     components: {
-        FollowUpModal,
-        UpdateStatusModal
+        //
     },
 
     data() {
         return {
             loading: false,
-            customers: [],
-            customerData: {},
+            messages: [],
             currentPage: 1,
             perPage: 10,
             pageOptions: [5, 10, 25, 50, 100],
@@ -170,28 +159,28 @@ export default {
                     sortable: true
                 },
                 {
-                    key: "name",
+                    key: "customer_id",
+                    label: "Customer ID",
+                    sortable: true
+                },
+                {
+                    key: "customer_name",
                     label: "Customer Name",
                     sortable: true
                 },
                 {
-                    key: "phone",
-                    label: "Phone No.",
+                    key: "title",
+                    label: "Title",
                     sortable: true
                 },
                 {
-                    key: "email",
-                    label: "Email",
+                    key: "message",
+                    label: "Message",
                     sortable: true
                 },
                 {
-                    key: "status",
-                    label: "Status",
-                    sortable: true
-                },
-                {
-                    key: "actions",
-                    label: "Actions",
+                    key: "created_at",
+                    label: "Sent On",
                     sortable: true
                 }
             ]
@@ -200,25 +189,25 @@ export default {
 
     computed: {
         rows() {
-            return this.customers.length;
+            return this.messages.length;
         }
     },
 
     created() {
-        this.getCustomers();
+        this.getMessages();
     },
 
     methods: {
-        async getCustomers() {
+        async getMessages() {
             this.loading = true;
-            this.customers = [];
+            this.messages = [];
 
             try {
-                const response = await this.axios.get("/agent/customers");
+                const response = await this.axios.get("/agent/getmessages");
 
                 const data = response.data;
 
-                this.customers = Object.keys(data).map(i => data[i]);
+                this.messages = Object.keys(data).map(i => data[i]);
 
                 this.loading = false;
             } catch (errors) {

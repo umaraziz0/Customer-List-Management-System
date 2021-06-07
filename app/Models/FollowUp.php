@@ -18,6 +18,18 @@ class FollowUp extends Model
         "agent_id",
         "customer_id",
         "title",
-        "message"
+        "message",
+        "customer_name"
     ];
+
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:m:s',
+    ];
+
+    public function getCustomerNameAttribute()
+    {
+        $customer = Customer::where("id", $this->customer_id)->first();
+
+        return $customer->name;
+    }
 }

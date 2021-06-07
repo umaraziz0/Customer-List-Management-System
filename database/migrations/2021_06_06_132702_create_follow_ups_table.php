@@ -20,7 +20,7 @@ class CreateFollowUpsTable extends Migration
             $table->unsignedBigInteger("customer_id");
             $table->foreign("customer_id")->references("id")->on("customers")->onUpdate('cascade')->onDelete('cascade');
             $table->string("title");
-            $table->string("message");
+            $table->text("message");
             $table->timestamps();
         });
     }

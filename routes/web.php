@@ -42,6 +42,7 @@ Route::prefix("admin")->group(function () {
 Route::prefix("agent")->group(function () {
     Route::middleware(['auth', 'is_agent'])->group(function () {
         Route::get("/customers", [CustomerController::class, 'getCustomersByAgent']);
+        Route::get("/getmessages", [AgentController::class, 'getMessages']);
         Route::post("/followup", [CustomerController::class, 'followUp']);
         Route::put("/updatestatus/{customer}", [CustomerController::class, 'updateStatus']);
 

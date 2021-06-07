@@ -41,6 +41,7 @@ library.add(fab);
 
 import Admin from "./Admin.vue";
 import Agent from "./Agent.vue";
+import FollowUpList from "./components/FollowUpList.vue";
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 Vue.component("v-select", vSelect);
@@ -63,6 +64,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: "#app",
-    components: { Admin, Agent },
+    components: { Admin, Agent, FollowUpList },
     router: router
 });
