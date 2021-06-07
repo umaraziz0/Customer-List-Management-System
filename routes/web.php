@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AgentController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,17 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, "index"]);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::view('/home', "home_old");
 
 Route::prefix("admin")->group(function () {
     Route::middleware(['auth', 'is_admin'])->group(function () {
         Route::get("/{any?}", [AdminController::class, 'index'])->where("any", ".*")->name("admin.home");
+    });
+});
+
+Route::prefix("agent")->group(function () {
+    Route::middleware(['auth', 'is_agent'])->group(function () {
+        Route::get("/{any?}", [AgentController::class, 'index'])->where("any", ".*")->name("agent.home");
     });
 });
 

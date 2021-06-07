@@ -53,7 +53,9 @@ class LoginController extends Controller
                 return redirect()->route('admin.home');
             }
 
-            return redirect()->route('home');
+            if (auth()->user()->role == "agent") {
+                return redirect()->route('agent.home');
+            }
         }
 
         return redirect()->route('login')
