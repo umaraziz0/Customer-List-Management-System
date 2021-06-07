@@ -139,6 +139,10 @@
             :customerData="customerData"
             @reload-table="getCustomers"
         />
+        <assign-agent-modal
+            :customerData="customerData"
+            @reload-table="getCustomers"
+        />
     </b-container>
 </template>
 
@@ -146,9 +150,15 @@
 import CreateCustomerModal from "./components/CreateCustomerModal.vue";
 import EditCustomerModal from "./components/EditCustomerModal.vue";
 import DeleteCustomerModal from "./components/DeleteCustomerModal.vue";
+import AssignAgentModal from "./components/AssignAgentModal.vue";
 
 export default {
-    components: { CreateCustomerModal, EditCustomerModal, DeleteCustomerModal },
+    components: {
+        CreateCustomerModal,
+        EditCustomerModal,
+        DeleteCustomerModal,
+        AssignAgentModal
+    },
 
     data() {
         return {
@@ -239,7 +249,8 @@ export default {
         },
 
         assignAgent(customer) {
-            //
+            this.customerData = customer;
+            this.$bvModal.show("assign-agent-modal");
         },
 
         onFiltered(filteredItems) {

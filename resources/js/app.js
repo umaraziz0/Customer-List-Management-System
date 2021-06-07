@@ -13,6 +13,7 @@ import VueRouter from "vue-router";
 import routes from "./routes";
 import axios from "axios";
 import VueAxios from "vue-axios";
+import vSelect from "vue-select";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -41,6 +42,7 @@ library.add(fab);
 import Admin from "./Admin.vue";
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
+Vue.component("v-select", vSelect);
 
 Vue.component(
     "example-component",

@@ -23,21 +23,28 @@ Auth::routes();
 
 Route::view('/home', "home_old");
 
+// Admin routes
 Route::prefix("admin")->group(function () {
     Route::middleware(['auth', 'is_admin'])->group(function () {
+        Route::get("/getagents", [AgentController::class, "getAgents"]);
+        Route::put("/assign/{customer}", [CustomerController::class, 'assignAgent']);
+
+        Route::post("/customer", [CustomerController::class, 'store']);
+        Route::put("/customer/{customer}", [CustomerController::class, 'update']);
+        Route::delete("/customer/{customer}", [CustomerController::class, 'destroy']);
+
         Route::get("/{any?}", [AdminController::class, 'index'])->where("any", ".*")->name("admin.home");
     });
 });
 
+// Agent routes
 Route::prefix("agent")->group(function () {
     Route::middleware(['auth', 'is_agent'])->group(function () {
         Route::get("/{any?}", [AgentController::class, 'index'])->where("any", ".*")->name("agent.home");
     });
 });
 
+// Admin & agent routes
 Route::middleware(['auth'])->group(function () {
     Route::get("/customers", [CustomerController::class, 'index']);
-    Route::post("/customer", [CustomerController::class, 'store']);
-    Route::put("/customer/{customer}", [CustomerController::class, 'update']);
-    Route::delete("/customer/{customer}", [CustomerController::class, 'destroy']);
 });

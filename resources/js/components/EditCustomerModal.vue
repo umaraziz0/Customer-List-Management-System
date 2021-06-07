@@ -67,7 +67,7 @@ export default {
 
             try {
                 const response = await this.axios.put(
-                    "/customer/" + this.customerData.id,
+                    "/admin/customer/" + this.customerData.id,
                     this.customerData
                 );
 

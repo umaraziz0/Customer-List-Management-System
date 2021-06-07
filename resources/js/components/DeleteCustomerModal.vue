@@ -35,7 +35,7 @@ export default {
 
             try {
                 const response = await this.axios.delete(
-                    "/customer/" + this.customerData.id
+                    "/admin/customer/" + this.customerData.id
                 );
 
                 const data = response.data;

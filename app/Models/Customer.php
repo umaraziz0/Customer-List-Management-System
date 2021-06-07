@@ -21,4 +21,15 @@ class Customer extends Model
         'agent',
         'status',
     ];
+
+    public function getAgentAttribute($value)
+    {
+        $agent = User::find($value);
+
+        if ($agent) {
+            return $agent->name;
+        }
+
+        return null;
+    }
 }

@@ -68,7 +68,7 @@ class CustomerController extends Controller
 
         $customer->update($request->all());
 
-        return response([
+        return response()->json([
             "success" => true,
             "message" => "Customer contact updated.",
             "customer" => $customer
@@ -85,9 +85,28 @@ class CustomerController extends Controller
     {
         $customer->delete();
 
-        return response([
+        return response()->json([
             "success" => true,
             "message" => "Customer contact deleted.",
+            "customer" => $customer
+        ], 200);
+    }
+
+    /**
+     * Assign an agent to a customer
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function assignAgent(Request $request, Customer $customer)
+    {
+        $customer->update([
+            "agent" => $request->input("agent_id")
+        ]);
+
+        return response()->json([
+            "success" => true,
+            "message" => "Agent assigned.",
             "customer" => $customer
         ], 200);
     }

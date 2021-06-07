@@ -18,7 +18,7 @@ class CreateCustomersTable extends Migration
             $table->string("name");
             $table->string("phone");
             $table->string("email");
-            $table->string("agent")->nullable();
+            $table->unsignedBigInteger("agent")->nullable();
             $table->string("status")->default("uncontacted");
             $table->timestamps();
         });

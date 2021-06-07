@@ -74,7 +74,10 @@ export default {
             this.loading = true;
 
             try {
-                const response = await this.axios.post("/customer", this.form);
+                const response = await this.axios.post(
+                    "/admin/customer",
+                    this.form
+                );
 
                 const data = response.data;
 
