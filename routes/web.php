@@ -39,4 +39,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get("/customers", [CustomerController::class, 'index']);
     Route::post("/customer", [CustomerController::class, 'store']);
     Route::put("/customer/{customer}", [CustomerController::class, 'update']);
+    Route::delete("/customer/{customer}", [CustomerController::class, 'destroy']);
 });

@@ -135,15 +135,20 @@
             :customerData="customerData"
             @reload-table="getCustomers"
         />
+        <delete-customer-modal
+            :customerData="customerData"
+            @reload-table="getCustomers"
+        />
     </b-container>
 </template>
 
 <script>
 import CreateCustomerModal from "./components/CreateCustomerModal.vue";
 import EditCustomerModal from "./components/EditCustomerModal.vue";
+import DeleteCustomerModal from "./components/DeleteCustomerModal.vue";
 
 export default {
-    components: { CreateCustomerModal, EditCustomerModal },
+    components: { CreateCustomerModal, EditCustomerModal, DeleteCustomerModal },
 
     data() {
         return {
