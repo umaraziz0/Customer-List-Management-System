@@ -21,8 +21,6 @@ Route::get('/', [HomeController::class, "index"]);
 
 Auth::routes();
 
-Route::view('/home', "home_old");
-
 // Admin routes
 Route::prefix("admin")->group(function () {
     Route::middleware(['auth', 'is_admin'])->group(function () {

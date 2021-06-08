@@ -2,6 +2,8 @@
 
 by Mohamad Umar Aziz
 
+A simple customer list management system built as an assignment for Xylo.
+
 ### Tools & Libraries
 
 -   Laravel 8
@@ -23,3 +25,4 @@ by Mohamad Umar Aziz
 6. Migrate database `php artisan migrate`
 7. Run DB seeder (optional): `php artisan db:seed`
 8. Run built in server: `php artisan serve`
+9. Access the website using the port created by Laravel
