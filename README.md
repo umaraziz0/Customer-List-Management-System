@@ -14,3 +14,12 @@ by Mohamad Umar Aziz
 -   MySQL 8.0
 
 ### Installation
+
+1. Clone the repo
+2. `cd` to the project folder
+3. Install dependencies `composer install` and `npm install`
+4. Save the `.env.example` as `.env` and set your database information
+5. Generate the app key: `php artisan key:generate`
+6. Migrate database `php artisan migrate`
+7. Run DB seeder (optional): `php artisan db:seed`
+8. Run built in server: `php artisan serve`
