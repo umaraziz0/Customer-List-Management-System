@@ -15,7 +15,7 @@ by Mohamad Umar Aziz
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repo: `git clone https://github.com/umaraziz0/Customer-List-Management-System.git`
 2. `cd` to the project folder
 3. Install dependencies `composer install` and `npm install`
 4. Save the `.env.example` as `.env` and set your database information
