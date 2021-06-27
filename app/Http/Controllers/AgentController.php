@@ -22,6 +22,7 @@ class AgentController extends Controller
     {
         $messages = FollowUp::where("agent_id", auth()->user()->id)->get();
 
+        // Get customer name from accessor
         foreach ($messages as $message) {
             $message->customer_name = $message->customer_name;
         }
